@@ -1,10 +1,7 @@
 package com.pluralsight.NorthwindTradersAPI2.controllers;
 
 import com.pluralsight.NorthwindTradersAPI2.models.Product;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,5 +31,42 @@ public class ProductsController {
             }
         }
         return null;
+    }
+
+    @RequestMapping(path = "/products/filterName", method = RequestMethod.GET)
+    public List<Product> filterProductsByName(@RequestParam String productName) {
+        List<Product> matchingProducts = new ArrayList<>();
+
+        for (Product product : products) {
+            if (product.getProductName().equalsIgnoreCase(productName)) {
+                matchingProducts.add(product);
+            }
+        }
+        return matchingProducts;
+    }
+
+    @RequestMapping(path = "/products/filterCategoryID", method = RequestMethod.GET)
+    public List<Product> filterProductsByCategoryID(@RequestParam int productCategoryID) {
+        List<Product> matchingProducts = new ArrayList<>();
+
+        for (Product product : products) {
+            if (product.getCategoryID() == productCategoryID) {
+                matchingProducts.add(product);
+            }
+        }
+        return matchingProducts;
+    }
+
+    @RequestMapping(path = "/products/filterPrice", method = RequestMethod.GET)
+    public List<Product> filterProductsByPriceRange(@RequestParam double minPrice,
+                                                    @RequestParam double maxPrice) {
+        List<Product> matchingProducts = new ArrayList<>();
+
+        for (Product product : products) {
+            if (product.getUnitPrice() >= minPrice && product.getUnitPrice() <= maxPrice) {
+                matchingProducts.add(product);
+            }
+        }
+        return matchingProducts;
     }
 }
